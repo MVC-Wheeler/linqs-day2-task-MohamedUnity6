@@ -1,0 +1,301 @@
+using System.Globalization;
+
+namespace LINQ_Sheet
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+
+            var students = new List<Student>
+            {
+                new Student { Id = 1, Name = "Ahmed Ali", Age = 21, Department = "CS", GPA = 3.6 },
+                new Student { Id = 2, Name = "Sara Mohamed", Age = 20, Department = "IT", GPA = 3.2 },
+                new Student { Id = 3, Name = "Omar Hassan", Age = 22, Department = "CS", GPA = 2.8 },
+                new Student { Id = 4, Name = "Mona Adel", Age = 19, Department = "IS", GPA = 3.9 },
+                new Student { Id = 5, Name = "Youssef Kamal", Age = 23, Department = "CS", GPA = 2.4 },
+                new Student { Id = 6, Name = "Aya Mostafa", Age = 21, Department = "IT", GPA = 3.5 },
+                new Student { Id = 7, Name = "Hassan Mahmoud", Age = 24, Department = "IS", GPA = 1.9 },
+                new Student { Id = 8, Name = "Nada Fathy", Age = 20, Department = "CS", GPA = 3.1 },
+                new Student { Id = 9, Name = "Ali Samir", Age = 18, Department = "IT", GPA = 2.6 },
+                new Student { Id = 10, Name = "Reem Tarek", Age = 22, Department = "IS", GPA = 3.7 },
+                new Student { Id = 11, Name = "Amr Nabil", Age = 21, Department = "CS", GPA = 4.0 },
+                new Student { Id = 12, Name = "Laila Ashraf", Age = 19, Department = "IT", GPA = 2.2 }
+            };
+            var courses = new List<Course>
+            {
+                new Course { Id = 1, Title = "C# Fundamentals", Credits = 3 },
+                new Course { Id = 2, Title = "OOP", Credits = 4 },
+                new Course { Id = 3, Title = "Databases", Credits = 3 },
+                new Course { Id = 4, Title = "ASP.NET MVC", Credits = 4 },
+                new Course { Id = 5, Title = "LINQ Deep Dive", Credits = 2 }
+            };
+
+            var enrollments = new List<Enrollment>
+            {
+                new Enrollment { StudentId = 1, CourseId = 1 },
+                new Enrollment { StudentId = 1, CourseId = 2 },
+
+                new Enrollment { StudentId = 2, CourseId = 1 },
+                new Enrollment { StudentId = 2, CourseId = 3 },
+
+                new Enrollment { StudentId = 3, CourseId = 2 },
+
+                new Enrollment { StudentId = 4, CourseId = 4 },
+                new Enrollment { StudentId = 4, CourseId = 5 },
+
+                new Enrollment { StudentId = 6, CourseId = 3 },
+                new Enrollment { StudentId = 6, CourseId = 4 },
+
+                new Enrollment { StudentId = 8, CourseId = 1 },
+
+                new Enrollment { StudentId = 10, CourseId = 2 },
+                new Enrollment { StudentId = 10, CourseId = 3 },
+
+                new Enrollment { StudentId = 11, CourseId = 5 }
+            };
+
+            // Warm-Up
+
+            //1-
+            var studentsName = students.Select(s => s.Name).ToList();
+
+            //foreach (var item in studentsName)
+            //{
+            //    Console.WriteLine(item);
+            //}
+
+            //2-
+
+            var Students = students.Select(x => new { Name = x.Name, GPA = x.GPA });
+
+            //foreach (var item in Students)
+            //{
+            //    Console.WriteLine(item);
+            //}
+
+            //3-
+
+            bool hasGpa = students.Any(x => x.GPA > 3.8);
+
+            //Console.WriteLine(hasGpa);
+
+            //4-
+
+            bool allOlder = students.All(x => x.Age > 18);
+
+            //Console.WriteLine(allOlder);
+
+            //Fundamentals
+
+            //1-
+
+            var studentgreaterthan20 = students.Where(x => x.Age > 20);
+
+            //2-
+
+            var csDepart = students.Where(x => x.Department == "CS");
+
+
+            //3-
+
+            var nameDepart = students.Select(x => new { x.Name, x.Department });
+
+            //4-
+
+            var orderByGPA = students.OrderBy(x => x.GPA);
+
+
+            //5-
+
+            var orderByGPADesc = students.OrderByDescending(x => x.GPA).ThenBy(x => x.Name);
+
+
+            //6-
+
+            var top5 = orderByGPA.Take(5);
+
+            //7-
+
+            var lessthan2 = students.Any(x => x.GPA < 2);
+
+
+            //8-
+
+            var Greaterthan2 = students.All(x => x.GPA >= 2);
+
+            //9-
+
+            var numberOfStudents = students.Count();
+
+            //10-
+
+            var lengthMoreThan5 = students.Where(x => x.Name.Length > 5);
+
+
+            //Aggregation & Calculations
+
+            //1-
+
+            var maxGPA = students.Max(x => x.GPA);
+
+
+            //2-
+
+            var minGPA = students.Min(x => x.GPA);
+
+
+            //3-
+
+            var averageGPA = students.Average(x => x.GPA);
+
+
+            //4-
+
+
+            var averageGPAWithCS = students.Where(x => x.Department == "CS").Average(x => x.GPA);
+
+
+            //5-
+
+            var sumOfGPA = students.Sum(x => x.GPA);
+
+            //6-
+
+            var GreaterThanAverage = students.Where(x => x.GPA > students.Average(x => x.GPA)).Count();
+
+            //7-
+
+            var Top3 = students.OrderBy(x => x.GPA).Take(3).Average(x => x.GPA);
+
+            //8-
+
+            var Min2 = students.OrderByDescending(x => x.GPA).Skip(2).Average(x => x.GPA);
+
+            //9-
+
+            var Max = students.Where(x => x.GPA == students.Max(X => X.GPA));
+
+            //10-
+
+            var totalNumberGreaterThan20 = students.Count() > 20;
+
+
+            //Advanced
+
+            //1-
+
+            var Group1 = students.GroupBy(x => x.Department).Select(x => new { DepName = x.Key, StudentsCount = x.Count() });
+
+
+            //2-
+
+            var Group2 = students.GroupBy(x => x.Department).Select(x => new { DepName = x.Key, Average = x.Average(x => x.GPA) });
+
+
+
+
+            //3-
+
+            var Group3 = students.GroupBy(x => x.GPA < 2.5 ? "Low" : x.GPA > 3.5 ? "High" : "Medium");
+
+
+            //4-
+
+            var Group4 = enrollments.GroupJoin(courses, s => s.CourseId, c => c.Id, (enroll, course) => new { StudentName = students.FirstOrDefault(x => x.Id == enroll.StudentId).Name, CourseTitle = courses }).Distinct();
+
+            //foreach (var item in Group4)
+            //{
+            //    Console.WriteLine(item.StudentName + ": ");
+            //    foreach (var item1 in item.CourseTitle)
+            //    {
+            //        Console.WriteLine(" "+item1.Title);
+            //    }
+            //}
+
+            //5-
+            var Group5 = enrollments.GroupBy(x => x.StudentId).Select(x => new { StudentName = students.FirstOrDefault(s=>s.Id == x.Key).Name, Count = x.Count() });
+
+            //foreach (var item in Group5)
+            //{
+            //    Console.WriteLine(item.StudentName + ": " + item.Count);
+            //}
+
+            //6-
+
+            var Group6 = enrollments.GroupBy(x => x.StudentId).Select(x => new { StudentName = students.FirstOrDefault(s => s.Id == x.Key).Name, Count = x.Sum(x=> courses.FirstOrDefault(c=>c.Id == x.CourseId).Credits) });
+
+            //foreach (var item in Group6)
+            //{
+            //    Console.WriteLine(item.StudentName + ": " + item.Count);
+            //}
+
+
+            //7-
+
+            var result = students
+        .GroupJoin(
+        enrollments,
+        s => s.Id,
+        c => c.StudentId,
+        (s, courseGroup) => new { s, courseGroup }
+        )
+    .SelectMany(
+        x => x.courseGroup.DefaultIfEmpty(),
+        (x, c) => new
+        {
+            Student = x.s.Name,
+            Course = c,
+        }).Where(x => x.Course == null);
+
+
+            foreach (var item in result)
+            {
+                Console.WriteLine(item.Student);
+            }
+            //8-
+
+            var Group8 = students.GroupBy(s => s.Department).Select(x => new {DepName = x.Key, GPA = x.Max(s => s.GPA) });
+
+            //foreach (var item in Group8)
+            //{
+            //    Console.WriteLine(item.DepName + ": " + item.GPA);
+            //}
+
+
+            //9-
+
+            var Group9 = students.GroupBy(s => s.Department).OrderByDescending(x => x.Average(s => s.GPA)).Select(x => x.Key);
+
+            //foreach (var item in Group9)
+            //{
+            //    Console.WriteLine(item);
+            //}
+
+
+        }
+
+
+    }
+
+    public class Student
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int Age { get; set; }
+        public string Department { get; set; }
+        public double GPA { get; set; }
+    }
+    public class Course
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public int Credits { get; set; }
+    }
+    public class Enrollment
+    {
+        public int StudentId { get; set; }
+        public int CourseId { get; set; }
+    }
+
+}
